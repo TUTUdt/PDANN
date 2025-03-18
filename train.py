@@ -69,8 +69,8 @@ def main():
 
             feature_train = np.zeros((hs_data_train.shape[0], 4, 6))
             feature_V = np.zeros((hs_data_V.shape[0], 4, 6))
-            FB_train = np.zeros((hs_data_train.shape[0], 1))
-            FB_V = np.zeros((hs_data_V.shape[0], 1))
+            target_train = np.zeros((hs_data_train.shape[0], 1))
+            target_V = np.zeros((hs_data_V.shape[0], 1))
 
             for r in range(hs_data_train.shape[1] - 1):
                 for j in range(hs_data_train.shape[2] - 1):
@@ -107,13 +107,13 @@ def main():
                     for a in range(6 * r, 7 + 6 * r):
                         for b in range(6 * j, 7 + 6 * j):
                             if a < 7 + 6 * r and b < 7 + 6 * j:
-                                FB_train[:, 0] = Hi_hs_data_train[:, a, b]
-                                FB_V[:, 0] = Hi_hs_data_V[:, a, b]
+                                target_train[:, 0] = Hi_hs_data_train[:, a, b]
+                                target_V[:, 0] = Hi_hs_data_V[:, a, b]
 
-                                if np.all((FB_train == 0) | np.isnan(FB_train)):
+                                if np.all((target_train == 0) | np.isnan(target_train)):
                                     continue
 
-                                features, labels = preprocess_data(feature_train, FB_train)
+                                features, labels = preprocess_data(feature_train, target_train)
                                 featuresV, labelsV = preprocess_data(feature_V, FB_V)
 
                                 if features.sum() == 0 or np.isnan(features).all():
@@ -133,7 +133,6 @@ def main():
                                 no_improve_count_v = 0
                                 no_improve_count_t = 0
                                 model = Net(input_size, hidden_size, output_size)
-                                loss_func = nn.MSELoss()
                                 if var == 'dir':
                                     loss_func = AngleRegressionLoss()
                                 else:
@@ -142,7 +141,7 @@ def main():
                                 mse_acc = np.array([])
                                 train_model(model, train_loader, validation_dataset, loss_func, optimizer, num_epochs, tra_mse_bench, no_improve_count_t, val_mse_bench, no_improve_count_v, learning_rate, mse_acc)
                                 model = model.to(torch.device("cpu"))
-                                torch.save(model.state_dict(), f'{folder}\\NET-hs\\Net{a}+{b}.pt')
+                                torch.save(model.state_dict(), f'{folder}\\NET-{var}\\Net{a}+{b}.pt')
                                 featureup = feature_train
 
 if __name__ == "__main__":
