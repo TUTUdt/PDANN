@@ -2,7 +2,7 @@
 Point-by-point Data-driven Approach for Statistical Downscaling of  Integrated Wave Parameters in Coastal Regions --PDANN的实现代码
 
 ![ANN修正](https://github.com/user-attachments/assets/8bf28d39-5764-454a-ace8-56bda85340aa)
-改图展示了PDANN方法中每个子模型的网络结构。
+PDANN方法中每个子模型的网络结构。
 
 针对代码内容有以下几点温馨提示：
 1.因为内存限制，代码中是将大的区域分成八块小区域来处理。如果你的内存显卡允许不许做这个处理。
